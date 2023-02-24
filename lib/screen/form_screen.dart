@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 class FormScreen extends StatefulWidget {
   final Function onSend;
+
   const FormScreen({
     super.key,
     required this.onSend,
@@ -28,17 +29,17 @@ class _FormScreenState extends State<FormScreen> {
             TextField(
               controller: _textController,
               decoration: const InputDecoration(
-                hintText: "Enter Your Name",
+                hintText: "Enter your name.",
               ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 final name = _textController.text;
-                widget.onSend;
-                context.read<PageManager<String>>().returnData(name);
+
+                widget.onSend();
+
+                context.read<PageManager>().returnData(name);
               },
               child: const Text("Send"),
             ),

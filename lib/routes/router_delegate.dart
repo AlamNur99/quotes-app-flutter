@@ -11,7 +11,12 @@ class MyRouterDelegate extends RouterDelegate
 
   MyRouterDelegate() : _navigatorKey = GlobalKey<NavigatorState>();
 
+  @override
+  GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
+
   String? selectedQuote;
+
+  /// todo-02-delegate-01: add form page state
   bool isForm = false;
 
   @override
@@ -20,13 +25,15 @@ class MyRouterDelegate extends RouterDelegate
       key: navigatorKey,
       pages: [
         MaterialPage(
-          key: const ValueKey("QuotesListPage"),
+          key: const ValueKey("QuotesListScreen"),
           child: QuotesListScreen(
             quotes: quotes,
             onTapped: (String quoteId) {
               selectedQuote = quoteId;
               notifyListeners();
             },
+
+            /// todo-02-delegate-04: handle FormScreen callback
             toFormScreen: () {
               isForm = true;
               notifyListeners();
@@ -35,15 +42,18 @@ class MyRouterDelegate extends RouterDelegate
         ),
         if (selectedQuote != null)
           MaterialPage(
-            key: ValueKey("QuoteDetailsPage-$selectedQuote"),
+            key: ValueKey(selectedQuote),
             child: QuoteDetailsScreen(
               quoteId: selectedQuote!,
             ),
           ),
+
+        /// todo-02-delegate-02: add FormScreen page
         if (isForm)
           MaterialPage(
-            key: const ValueKey("FormScreen"),
+            key: ValueKey("FormScreen"),
             child: FormScreen(
+              /// todo-02-delegate-03: handle onSend callback
               onSend: () {
                 isForm = false;
                 notifyListeners();
@@ -58,6 +68,7 @@ class MyRouterDelegate extends RouterDelegate
         }
 
         selectedQuote = null;
+
         isForm = false;
         notifyListeners();
 
@@ -65,9 +76,6 @@ class MyRouterDelegate extends RouterDelegate
       },
     );
   }
-
-  @override
-  GlobalKey<NavigatorState>? get navigatorKey => _navigatorKey;
 
   @override
   Future<void> setNewRoutePath(configuration) async {}

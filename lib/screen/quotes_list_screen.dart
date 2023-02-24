@@ -7,7 +7,7 @@ import '../model/quote.dart';
 class QuotesListScreen extends StatelessWidget {
   final List<Quote> quotes;
   final Function(String) onTapped;
-  final Function() toFormScreen;
+  final Function toFormScreen;
 
   const QuotesListScreen({
     Key? key,
@@ -22,16 +22,16 @@ class QuotesListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Quotes App"),
         actions: [
+          /// todo-04-navigate-01: add a button to handle navigation to FormScreen
           IconButton(
             onPressed: () async {
               final scaffoldMessengerState = ScaffoldMessenger.of(context);
+              final pageManager = context.read<PageManager>();
               toFormScreen();
-              final dataString =
-                  await context.read<PageManager<String>>().waitForResult();
+              final dataString = await pageManager.waitForResult();
+
               scaffoldMessengerState.showSnackBar(
-                SnackBar(
-                  content: Text("My Name is $dataString"),
-                ),
+                SnackBar(content: Text("My name is $dataString")),
               );
             },
             icon: const Icon(Icons.quiz),
