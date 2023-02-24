@@ -1,9 +1,7 @@
+import 'package:declarative_navigation/routes/page_manager.dart';
 import 'package:declarative_navigation/routes/router_delegate.dart';
-import 'package:declarative_navigation/screen/quote_detail_screen.dart';
-import 'package:declarative_navigation/screen/quotes_list_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'model/quote.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const QuotesApp());
@@ -27,11 +25,14 @@ class _QuotesAppState extends State<QuotesApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Quotes App',
-      home: Router(
-        routerDelegate: myRouterDelegate,
-        backButtonDispatcher: RootBackButtonDispatcher(),
+    return ChangeNotifierProvider(
+      create: (context) => PageManager(),
+      child: MaterialApp(
+        title: 'Quotes App',
+        home: Router(
+          routerDelegate: myRouterDelegate,
+          backButtonDispatcher: RootBackButtonDispatcher(),
+        ),
       ),
     );
   }
